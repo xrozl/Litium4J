@@ -78,4 +78,15 @@ public class AccountManager {
         return true;
     }
 
+    public File getAccountDetailFile() {
+        return accountDetailFile;
+    }
+
+    public Map<String, String> getLoginDetails() {
+        return loginDetails;
+    }
+
+    public Map<String, String> getTags() {
+        return tags;
+    }
 }
