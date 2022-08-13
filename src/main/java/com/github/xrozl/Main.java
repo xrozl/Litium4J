@@ -1,6 +1,7 @@
 package com.github.xrozl;
 
 import com.github.xrozl.commands.AccountsCommand;
+import com.github.xrozl.manager.AddAccountCommand;
 import com.github.xrozl.event.BotReadyListener;
 import com.github.xrozl.manager.AccountManager;
 import net.dv8tion.jda.api.JDA;
@@ -56,6 +57,7 @@ public class Main {
 
             builder.addEventListeners(new BotReadyListener());
             builder.addEventListeners(new AccountsCommand());
+            builder.addEventListeners(new AddAccountCommand());
 
             jda = builder.build().awaitReady();
 

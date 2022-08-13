@@ -11,6 +11,7 @@ public class AccountManager {
     File accountDetailFile;
 
     Map<String, String> tags;
+    Map<String, String> environments;
 
     public AccountManager() {
         this.loginDetails = new HashMap<>();
@@ -26,6 +27,7 @@ public class AccountManager {
         }
 
         this.tags = new HashMap<>();
+        this.environments = new HashMap<>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(this.accountDetailFile));
@@ -34,11 +36,27 @@ public class AccountManager {
                 String[] split = line.split("=");
                 this.loginDetails.put(split[0], split[1]);
                 this.tags.put(split[0], split[2]);
+                this.environments.put(split[0], split[3]);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    boolean saveToFile() {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(this.accountDetailFile));
+            for (Map.Entry<String, String> entry : this.loginDetails.entrySet()) {
+                bw.write(entry.getKey() + "=" + entry.getValue() + "=" + this.tags.get(entry.getKey()) + "=" + this.environments.get(entry.getKey()));
+                bw.newLine();
+            }
+            bw.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -48,6 +66,9 @@ public class AccountManager {
         }
 
         loginDetails.put(username, password);
+        tags.put(username, "");
+        environments.put(username, "env-" + System.currentTimeMillis() + "-" + username);
+        saveToFile();
         return true;
     }
 
@@ -57,6 +78,7 @@ public class AccountManager {
         }
 
         loginDetails.remove(username);
+        saveToFile();
         return true;
     }
 
@@ -66,6 +88,7 @@ public class AccountManager {
         }
 
         loginDetails.put(username, password);
+        saveToFile();
         return true;
     }
 
@@ -75,6 +98,7 @@ public class AccountManager {
         }
 
         tags.put(username, tag);
+        saveToFile();
         return true;
     }
 
