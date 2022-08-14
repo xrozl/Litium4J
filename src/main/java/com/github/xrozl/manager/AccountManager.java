@@ -12,6 +12,7 @@ public class AccountManager {
 
     Map<String, String> tags;
     Map<String, String> environments;
+    Map<String, String> messages;
 
     public AccountManager() {
         this.loginDetails = new HashMap<>();
@@ -28,6 +29,7 @@ public class AccountManager {
 
         this.tags = new HashMap<>();
         this.environments = new HashMap<>();
+        this.messages = new HashMap<>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(this.accountDetailFile));
@@ -37,6 +39,7 @@ public class AccountManager {
                 this.loginDetails.put(split[0], split[1]);
                 this.tags.put(split[0], split[2]);
                 this.environments.put(split[0], split[3]);
+                this.messages.put(split[0], split[4]);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -49,7 +52,7 @@ public class AccountManager {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(this.accountDetailFile));
             for (Map.Entry<String, String> entry : this.loginDetails.entrySet()) {
-                bw.write(entry.getKey() + "=" + entry.getValue() + "=" + this.tags.get(entry.getKey()) + "=" + this.environments.get(entry.getKey()));
+                bw.write(entry.getKey() + "=" + entry.getValue() + "=" + this.tags.get(entry.getKey()) + "=" + this.environments.get(entry.getKey()) + "=" + this.messages.get(entry.getKey()));
                 bw.newLine();
             }
             bw.close();
@@ -60,7 +63,7 @@ public class AccountManager {
         }
     }
 
-    boolean addAccount(String username, String password) {
+    public boolean addAccount(String username, String password) {
         if (loginDetails.containsKey(username)) {
             return false;
         }
@@ -72,7 +75,7 @@ public class AccountManager {
         return true;
     }
 
-    boolean removeAccount(String username) {
+    public boolean removeAccount(String username) {
         if (!loginDetails.containsKey(username)) {
             return false;
         }
@@ -92,12 +95,32 @@ public class AccountManager {
         return true;
     }
 
-    boolean updateTag(String username, String tag) {
+    public boolean updateTag(String username, String tag) {
         if (!loginDetails.containsKey(username)) {
             return false;
         }
 
         tags.put(username, tag);
+        saveToFile();
+        return true;
+    }
+
+    public boolean updateEnvironment(String username, String environment) {
+        if (!loginDetails.containsKey(username)) {
+            return false;
+        }
+
+        environments.put(username, environment);
+        saveToFile();
+        return true;
+    }
+
+    public boolean updateMessage(String username, String message) {
+        if (!loginDetails.containsKey(username)) {
+            return false;
+        }
+
+        messages.put(username, message);
         saveToFile();
         return true;
     }

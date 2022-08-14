@@ -1,7 +1,6 @@
 package com.github.xrozl;
 
-import com.github.xrozl.commands.AccountsCommand;
-import com.github.xrozl.manager.AddAccountCommand;
+import com.github.xrozl.commands.*;
 import com.github.xrozl.event.BotReadyListener;
 import com.github.xrozl.manager.AccountManager;
 import net.dv8tion.jda.api.JDA;
@@ -58,6 +57,9 @@ public class Main {
             builder.addEventListeners(new BotReadyListener());
             builder.addEventListeners(new AccountsCommand());
             builder.addEventListeners(new AddAccountCommand());
+            builder.addEventListeners(new RemoveAccountCommand());
+            builder.addEventListeners(new TagAccountCommand());
+            builder.addEventListeners(new MessageCommand());
 
             jda = builder.build().awaitReady();
 
@@ -66,8 +68,13 @@ public class Main {
                             .addOption(OptionType.STRING, "account-name", "Instagram Account Login ID", true)
                             .addOption(OptionType.STRING, "account-password", "Instagram Account Password", true))
                     .addCommands(Commands.slash("remove-account", "remove account")
+                            .addOption(OptionType.STRING, "account-name", "Instagram Account Login ID", true))
+                    .addCommands(Commands.slash("tag-account", "set tag")
                             .addOption(OptionType.STRING, "account-name", "Instagram Account Login ID", true)
-                    ).queue();
+                            .addOption(OptionType.STRING, "tag-name", "hash tag name (ex cat)", true))
+                    .addCommands(Commands.slash("msg-account", "set message")
+                            .addOption(OptionType.STRING, "account-name", "Instagram Account Login ID", true)
+                            .addOption(OptionType.STRING, "message", "set message", true)).queue();
         } catch (LoginException e) {
             System.out.println("LoginException");
             System.exit(1);

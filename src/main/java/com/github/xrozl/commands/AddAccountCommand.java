@@ -1,4 +1,4 @@
-package com.github.xrozl.manager;
+package com.github.xrozl.commands;
 
 import com.github.xrozl.Main;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
