@@ -12,6 +12,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -22,11 +24,17 @@ public class Main {
     public static String channelId;
     public static int count;
 
+    public static List<String> humanized = new ArrayList<>();
+
     public static void main(String[] args) {
         System.out.println("Hello world!");
 
         accManager = new AccountManager();
         sendUserManager = new SendUserManager();
+
+        // ignore
+        // humanized
+        // ignore
 
         count = 0;
 
