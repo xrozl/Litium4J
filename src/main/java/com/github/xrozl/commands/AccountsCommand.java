@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class AccountsCommand extends ListenerAdapter {
 
+
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         super.onSlashCommandInteraction(event);

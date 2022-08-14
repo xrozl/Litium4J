@@ -1,5 +1,7 @@
 package com.github.xrozl.manager;
 
+import org.openqa.selenium.chrome.ChromeDriver;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,7 @@ public class AccountManager {
     Map<String, String> tags;
     Map<String, String> environments;
     Map<String, String> messages;
+    Map<String, ChromeManager> chromeManagers;
 
     public AccountManager() {
         this.loginDetails = new HashMap<>();
@@ -30,6 +33,7 @@ public class AccountManager {
         this.tags = new HashMap<>();
         this.environments = new HashMap<>();
         this.messages = new HashMap<>();
+        this.chromeManagers = new HashMap<>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(this.accountDetailFile));
@@ -63,6 +67,19 @@ public class AccountManager {
         }
     }
 
+    public boolean canLogin(String username) {
+        ChromeDriver driver = chromeManagers.get(username).getDriver();
+        driver.get("https://www.instagram.com/");
+        // wait for login page to load
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
     public boolean addAccount(String username, String password) {
         if (loginDetails.containsKey(username)) {
             return false;
@@ -71,6 +88,8 @@ public class AccountManager {
         loginDetails.put(username, password);
         tags.put(username, "");
         environments.put(username, "env-" + System.currentTimeMillis() + "-" + username);
+        messages.put(username, "");
+        chromeManagers.put(username, new ChromeManager(environments.get(username)));
         saveToFile();
         return true;
     }
@@ -123,6 +142,14 @@ public class AccountManager {
         messages.put(username, message);
         saveToFile();
         return true;
+    }
+
+    public Map<String, String> getEnvironments() {
+        return environments;
+    }
+
+    public Map<String, String> getMessages() {
+        return messages;
     }
 
     public File getAccountDetailFile() {

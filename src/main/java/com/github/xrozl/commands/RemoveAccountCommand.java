@@ -25,8 +25,6 @@ public class RemoveAccountCommand extends ListenerAdapter {
             } else {
                 event.reply("Account not found").queue();
             }
-
-
         }
     }
 }
