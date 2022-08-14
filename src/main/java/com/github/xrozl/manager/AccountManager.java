@@ -198,4 +198,8 @@ public class AccountManager {
     public Map<String, String> getTags() {
         return tags;
     }
+
+    public Map<String, ChromeManager> getChromeManagers() {
+        return chromeManagers;
+    }
 }

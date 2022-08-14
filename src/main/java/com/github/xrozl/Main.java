@@ -3,6 +3,7 @@ package com.github.xrozl;
 import com.github.xrozl.commands.*;
 import com.github.xrozl.event.BotReadyListener;
 import com.github.xrozl.manager.AccountManager;
+import com.github.xrozl.manager.SendUserManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -15,12 +16,19 @@ import java.io.*;
 public class Main {
 
     public static AccountManager accManager;
+    public static SendUserManager sendUserManager;
     public static JDA jda;
+    public static String guildId;
+    public static String channelId;
+    public static int count;
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
 
         accManager = new AccountManager();
+        sendUserManager = new SendUserManager();
+
+        count = 0;
 
         String token = null;
 
@@ -32,6 +40,10 @@ public class Main {
                 String[] split = line.split("=");
                 if (split[0].equals("token")) {
                     token = split[1];
+                } else if (split[0].equals("guildId")) {
+                    guildId = split[1];
+                } else if (split[0].equals("channelId")) {
+                    channelId = split[1];
                 }
             }
         } catch (FileNotFoundException e) {
@@ -44,6 +56,12 @@ public class Main {
 
         if (token == null) {
             System.out.println("token is not found.");
+            System.exit(1);
+        } else if (guildId == null) {
+            System.out.println("guildId is not found.");
+            System.exit(1);
+        } else if (channelId == null) {
+            System.out.println("channelId is not found.");
             System.exit(1);
         }
 
