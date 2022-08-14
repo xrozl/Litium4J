@@ -24,10 +24,11 @@ public class AddAccountCommand extends ListenerAdapter {
                 return;
             }
 
+            event.reply("ログインしています...").queue();
             if (accManager.addAccount(user, pass)) {
-                event.reply("Account added").queue();
+                event.getChannel().sendMessage("Account added").queue();
             } else {
-                event.reply("Account already exists").queue();
+                event.getChannel().sendMessage("アカウントが既に存在するか、ログインできませんでした。").queue();
             }
 
 

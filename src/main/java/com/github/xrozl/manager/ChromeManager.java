@@ -3,13 +3,16 @@ package com.github.xrozl.manager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.File;
+
 public class ChromeManager {
 
     ChromeDriver driver;
 
     public ChromeManager(String env) {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("user-data-dir=" + env);
+        options.addArguments("user-data-dir=C:" + File.separator + "envs"+ File.separator + env);
+        System.setProperty("webdriver.chrome.driver", "lib" + File.separator + "chromedriver.exe");
         driver = new ChromeDriver(options);
     }
 

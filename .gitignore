@@ -19,3 +19,4 @@ target/
 .externalNativeBuild.cmake
 .externalNativeBuild.config.json
 .iml
+envs/

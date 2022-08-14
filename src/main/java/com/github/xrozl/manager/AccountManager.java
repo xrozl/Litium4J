@@ -1,5 +1,7 @@
 package com.github.xrozl.manager;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.*;
@@ -70,14 +72,43 @@ public class AccountManager {
     public boolean canLogin(String username) {
         ChromeDriver driver = chromeManagers.get(username).getDriver();
         driver.get("https://www.instagram.com/");
-        // wait for login page to load
         try {
             Thread.sleep(4000);
+            for (WebElement element : driver.findElements(By.tagName("input"))) {
+                if (element.getAttribute("name").equals("username")) {
+                    element.sendKeys(username);
+                }
+                if (element.getAttribute("name").equals("password")) {
+                    element.sendKeys(this.loginDetails.get(username));
+                }
+            }
+
+            for (WebElement element : driver.findElements(By.tagName("button"))) {
+                if (element.getAttribute("type").equals("submit")) {
+                    element.click();
+                }
+            }
+
+            Thread.sleep(4000);
+            boolean confirmed = false;
+
+            for (WebElement element : driver.findElements(By.tagName("button"))) {
+                String text = "情報を保存";
+                if (element.getAttribute("type").equals("button") && element.getText().equals(text)) {
+                    element.click();
+                    confirmed = true;
+                }
+            }
+
+            Thread.sleep(1500);
+
+            driver.quit();
+
+            return confirmed;
         } catch (InterruptedException e) {
             e.printStackTrace();
             return false;
         }
-        return false;
     }
 
     public boolean addAccount(String username, String password) {
@@ -86,12 +117,16 @@ public class AccountManager {
         }
 
         loginDetails.put(username, password);
-        tags.put(username, "");
+        tags.put(username, null);
         environments.put(username, "env-" + System.currentTimeMillis() + "-" + username);
-        messages.put(username, "");
+        messages.put(username, null);
         chromeManagers.put(username, new ChromeManager(environments.get(username)));
-        saveToFile();
-        return true;
+        if (canLogin(username)) {
+            saveToFile();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean removeAccount(String username) {
