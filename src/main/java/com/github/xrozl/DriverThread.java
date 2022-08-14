@@ -40,6 +40,7 @@ public class DriverThread extends Thread {
                             String name = null;
                             boolean next = true;
                             while (next) {
+                                posts = driver.findElements(By.className("_aagw"));
                                 if (posts.size() < Main.count) {
                                     driver.executeScript("window.scrollTo(0, document.body.scrollHeight)");
                                     Thread.sleep(8000);
