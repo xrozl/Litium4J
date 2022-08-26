@@ -100,7 +100,7 @@ public class AccountManager {
                 }
             }
 
-            Thread.sleep(1500);
+            Thread.sleep(5500);
 
             driver.quit();
 
@@ -115,7 +115,6 @@ public class AccountManager {
         if (loginDetails.containsKey(username)) {
             return false;
         }
-
         loginDetails.put(username, password);
         tags.put(username, null);
         environments.put(username, "env-" + System.currentTimeMillis() + "-" + username);
@@ -125,6 +124,11 @@ public class AccountManager {
             saveToFile();
             return true;
         } else {
+            loginDetails.remove(username);
+            tags.remove(username);
+            environments.remove(username);
+            messages.remove(username);
+            chromeManagers.remove(username);
             return false;
         }
     }

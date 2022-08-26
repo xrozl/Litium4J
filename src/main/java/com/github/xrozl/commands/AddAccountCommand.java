@@ -26,7 +26,7 @@ public class AddAccountCommand extends ListenerAdapter {
 
             event.reply("ログインしています...").queue();
             if (accManager.addAccount(user, pass)) {
-                event.getChannel().sendMessage("Account added").queue();
+                event.getChannel().sendMessage("ログインに成功しました。").queue();
             } else {
                 event.getChannel().sendMessage("アカウントが既に存在するか、ログインできませんでした。").queue();
             }

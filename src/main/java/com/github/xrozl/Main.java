@@ -18,6 +18,7 @@ import java.util.List;
 public class Main {
 
     public static AccountManager accManager;
+    public static DriverThread driverThread;
     public static SendUserManager sendUserManager;
     public static JDA jda;
     public static String guildId;
@@ -31,6 +32,8 @@ public class Main {
 
         accManager = new AccountManager();
         sendUserManager = new SendUserManager();
+        driverThread = new DriverThread();
+        driverThread.start();
 
         // ignore
         // humanized
@@ -86,6 +89,7 @@ public class Main {
             builder.addEventListeners(new RemoveAccountCommand());
             builder.addEventListeners(new TagAccountCommand());
             builder.addEventListeners(new MessageCommand());
+            builder.addEventListeners(new ForceMessageCommand());
 
             jda = builder.build().awaitReady();
 
@@ -98,6 +102,10 @@ public class Main {
                     .addCommands(Commands.slash("tag-account", "set tag")
                             .addOption(OptionType.STRING, "account-name", "Instagram Account Login ID", true)
                             .addOption(OptionType.STRING, "tag-name", "hash tag name (ex cat)", true))
+                    .addCommands(Commands.slash("force-message", "send force message (using development)")
+                            .addOption(OptionType.STRING, "account-name", "Instagram Account Login ID", true)
+                            .addOption(OptionType.STRING, "tag-name", "hash tag name (ex cat)", true)
+                            .addOption(OptionType.STRING, "message", "message", true))
                     .addCommands(Commands.slash("msg-account", "set message")
                             .addOption(OptionType.STRING, "account-name", "Instagram Account Login ID", true)
                             .addOption(OptionType.STRING, "message", "set message", true)).queue();
